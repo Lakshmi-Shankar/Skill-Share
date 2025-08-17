@@ -2,24 +2,31 @@ const express = require("express");
 const User = require("../Schema/userSchema");
 const routes = express.Router();
 
-routes.post("/add-skill/:id", async (req, res) => {
+routes.put("/add-skill/:id", async (req, res) => {
   try {
     const { skill } = req.body;
     if (!skill) return res.status(400).json({ 
-        message: "Skill is required" 
+      message: "Skill is required" 
     });
 
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ 
-        message: "User not found" 
+      message: "User not found" 
     });
 
-    user.skills.push(skill);
+    const normalizedSkill = skill.trim().toLowerCase();
+    if (user.skills.includes(normalizedSkill)) {
+      return res.status(400).json({ 
+        message: "Skill already exists" 
+      });
+    }
+
+    user.skills.push(normalizedSkill);
     await user.save();
 
     return res.status(200).json({ 
         message: "Skill added", 
-        skills: user.skills 
+        user 
     });
   } catch (err) {
     return res.status(500).json({ 
@@ -28,6 +35,7 @@ routes.post("/add-skill/:id", async (req, res) => {
     });
   }
 });
+
 
 
 routes.delete("/remove-skill/:id", async (req, res) => {

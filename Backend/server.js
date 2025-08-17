@@ -4,9 +4,13 @@ require("dotenv").config();
 const app = express();
 
 const UserRoutes = require("./Routes/userRoutes");
+const SkillRoutes = require("./Routes/skillManagement");
+const RequestRoutes = require("./Routes/requestRoutes");
 
 app.use(express.json());
 app.use("/user", UserRoutes);
+app.use("/skills", SkillRoutes);
+app.use("/request", RequestRoutes);
 
 PORT = process.env.PORT;
 MONGO_URI = process.env.MONGO_URI;

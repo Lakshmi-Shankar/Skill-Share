@@ -4,7 +4,7 @@ const routes = express.Router();
 
 const Schema = require("../Schema/userSchema");
 
-routes.get("/test-get", async(req, res) => {
+routes.get("/dashboard", async(req, res) => {
     try {
         const response = await Schema.find();
         if(response.length === 0) {
@@ -78,6 +78,7 @@ routes.post("/sign-in", async(req, res) => {
 
         return res.status(201).json({
             message: "Sign-In Successfull!",
+            loginData: loginAuth,
         })
     } catch(err) {
         return res.status(500).json({
@@ -86,6 +87,28 @@ routes.post("/sign-in", async(req, res) => {
         })
     } 
 })
+
+
+routes.get("/user/:id", async (req, res) => {
+  try {
+    const user = await Schema.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      user,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal server error",
+      Error: err.message,
+    });
+  }
+});
 
 
 

@@ -1,0 +1,194 @@
+/* DashBoard */
+body {
+  background-color: #EBD9B4; 
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #2C2C2C; 
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #B74C3A; 
+  color: #fff;
+  padding: 18px 24px;
+  border-radius: 8px;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.dashboard-header p {
+  margin: 0;
+  font-size: 15px;
+  opacity: 0.90;
+}
+
+.dashboard-header button {
+  background-color: #E9B44C; 
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dashboard-header button:hover {
+  background-color: #D18F27; 
+}
+
+/* Users list */
+.users-list {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 15px;
+}
+
+.user-card {
+  background-color: #FAF7F0; 
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 5px 12px rgba(0,0,0,0.2);
+}
+
+.user-card p:first-child {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #B74C3A; 
+}
+
+.user-card p:last-child {
+  font-size: 14px;
+  color: #444;
+}
+
+
+/* Profile */
+body {
+  background-color: #EBD9B4; /* Warm beige */
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #2C2C2C;
+}
+
+.profile-container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #FAF7F0; /* Light off-white */
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+}
+
+.profile-container h2,
+.profile-container h3 {
+  color: #B74C3A; /* Terracotta red */
+  margin-bottom: 10px;
+}
+
+.skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.skills-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff5e6;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border: 1px solid #e1c89f;
+  cursor: pointer;
+}
+
+.skills-list li button {
+  background: #B74C3A;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.skills-list li button:hover {
+  background: #933a2b;
+}
+
+.add-skill {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.add-skill input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.add-skill button {
+  background: #E9B44C; /* Golden yellow */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-skill button:hover {
+  background: #D18F27;
+}
+
+.profile-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.profile-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.profile-actions button:nth-child(1) {
+  background: #6C757D; /* Gray for Back */
+}
+
+.profile-actions button:nth-child(1):hover {
+  background: #555d64;
+}
+
+.profile-actions button:nth-child(2) {
+  background: #B74C3A; /* Terracotta for Logout */
+}
+
+.profile-actions button:nth-child(2):hover {
+  background: #933a2b;
+}
+

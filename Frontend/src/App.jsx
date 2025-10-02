@@ -4,6 +4,7 @@ import Signup from './UserComponents/signup';
 import Signin from './UserComponents/signin';
 import Dashboard from './UserInterface/dashboard';
 import Profile from './UserInterface/profile';
+import InspectProfile from './UserInterface/inspectProfile';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           {/* Interface */}
           <Route path='/dashboard' element = { <Dashboard />} />
           <Route path='/profile' element = { <Profile />} />
+          <Route path="/inspect/:id" element={<InspectProfile />} />
         </Routes>
       </Router>
     

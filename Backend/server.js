@@ -1,34 +1,49 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const http = require("http");
+const { Server } = require("socket.io");
 require("dotenv").config();
-const app = express();
 
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: ["http://localhost:5173"] }
+});
+
+// Middleware
+app.use(cors({ origin: ["http://localhost:5173"] }));
+app.use(express.json());
+
+// Routes
 const UserRoutes = require("./Routes/userRoutes");
 const SkillRoutes = require("./Routes/skillManagement");
 const RequestRoutes = require("./Routes/requestRoutes");
 
-const dev = ["http://localhost:5173",];
-app.use(cors({
-    origin: dev,
-}))
-
-app.use(express.json());
 app.use("/user", UserRoutes);
 app.use("/skills", SkillRoutes);
 app.use("/request", RequestRoutes);
 
-PORT = process.env.PORT;
-MONGO_URI = process.env.MONGO_URI;
+// Socket.IO
+io.on("connection", (socket) => {
+  console.log("New client connected: " + socket.id);
 
-mongoose.connect(MONGO_URI)
-.then((response) => {
+  socket.on("joinUser", (userId) => {
+    socket.join(userId); 
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected: " + socket.id);
+  });
+});
+
+app.set("socketio", io);
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
     console.log("Database connected!");
-    app.listen(PORT, () => {
-        console.log(`Server is running on http://localhost:${PORT}`);
-    })
-})
-.catch((err) => {
-    console.log("Failed to connect to database");
-    console.error(err.message);
-})
+    server.listen(process.env.PORT, () => {
+      console.log(`Server running on http://localhost:${process.env.PORT}`);
+    });
+  })
+  .catch((err) => console.error(err.message));

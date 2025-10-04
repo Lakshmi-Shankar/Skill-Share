@@ -21,10 +21,12 @@ app.use(express.json());
 const UserRoutes = require("./Routes/userRoutes");
 const SkillRoutes = require("./Routes/skillManagement");
 const RequestRoutes = require("./Routes/requestRoutes");
+const ChatRoutes = require("./Routes/chatRoutes");
 
 app.use("/user", UserRoutes);
 app.use("/skills", SkillRoutes);
 app.use("/request", RequestRoutes);
+app.use("/chat", ChatRoutes);
 
 // Socket.IO
 io.on("connection", (socket) => {

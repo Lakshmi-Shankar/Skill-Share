@@ -5,6 +5,7 @@ import Signin from './UserComponents/signin';
 import Dashboard from './UserInterface/dashboard';
 import Profile from './UserInterface/profile';
 import InspectProfile from './UserInterface/inspectProfile';
+import ChatPage from './UserInterface/ChatPage';
 
 import { Toaster } from "react-hot-toast";
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path='/dashboard' element = { <Dashboard />} />
           <Route path='/profile' element = { <Profile />} />
           <Route path="/inspect/:id" element={<InspectProfile />} />
+          <Route path="/chat/:chatId" element={<ChatPage />} />
         </Routes>
       </Router>
     

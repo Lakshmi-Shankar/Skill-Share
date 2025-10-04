@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Search, Bell, Cat, Dog, Bird, Smile, Rocket } from "lucide-react";
 import { io } from "socket.io-client";
+import toast from "react-hot-toast";
 import "../styles/Interface.css";
 
 const Dashboard = () => {
@@ -15,7 +16,6 @@ const Dashboard = () => {
 
   const currentId = localStorage.getItem("userId");
   const notificationRef = useRef();
-
   const avatarIcons = [User, Cat, Dog, Bird, Smile, Rocket];
 
   // Socket.io setup
@@ -25,16 +25,24 @@ const Dashboard = () => {
     // Join current user room
     socket.emit("joinUser", currentId);
 
-    // Listen for new requests
+    // Listen for new requests (for the receiver)
     socket.on("newRequest", (request) => {
-      // Only add if the logged-in user is the receiver
       if (request.toUser === currentId && request.status === "PENDING") {
         setNotifications((prev) => [...prev, request]);
-
         setJingle(true);
-        etTimeout(() => setJingle(false), 1000);
+        setTimeout(() => setJingle(false), 1000);
       }
-    });    
+    });
+
+    // Listen for declined requests (for the sender)
+    socket.on("requestDeclined", ({ message }) => {
+      toast.error(message);
+    });
+
+    // Listen for accepted requests (for the sender)
+    socket.on("requestAccepted", ({ message }) => {
+      toast.success(message);
+    });
 
     return () => socket.disconnect();
   }, [currentId]);
@@ -56,24 +64,21 @@ const Dashboard = () => {
   }, []);
 
   // Fetch notifications for current user
-// Fetch notifications for current user
-useEffect(() => {
-  const fetchNotifications = async () => {
-    try {
-      const res = await fetch(`http://localhost:5000/request/requests/${currentId}`);
-      const data = await res.json();
-      if (res.ok) {
-        // Only show requests that are still PENDING
-        const pendingRequests = data.requests.filter(r => r.status === "PENDING");
-        setNotifications(pendingRequests);
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/request/requests/${currentId}`);
+        const data = await res.json();
+        if (res.ok) {
+          const pendingRequests = data.requests.filter(r => r.status === "PENDING");
+          setNotifications(pendingRequests);
+        }
+      } catch (err) {
+        console.error(err.message);
       }
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-  fetchNotifications();
-}, [currentId]);
-
+    };
+    fetchNotifications();
+  }, [currentId]);
 
   // Close notification panel when clicking outside
   useEffect(() => {
@@ -103,9 +108,12 @@ useEffect(() => {
       });
       if (res.ok) {
         setNotifications((prev) => prev.filter((r) => r._id !== reqId));
+        if (status === "ACCEPTED") toast.success("Request accepted!");
+        if (status === "DECLINED") toast.error("Request declined!");
       }
     } catch (err) {
       console.error(err.message);
+      toast.error("Something went wrong!");
     }
   };
 
@@ -155,11 +163,10 @@ useEffect(() => {
               ))}
             </div>
           )}
-
         </div>
       </div>
 
-      {/* Search below workspace */}
+      {/* Search */}
       <div className="search-container">
         <Search className="search-icon" size={18} />
         <input
@@ -183,6 +190,7 @@ useEffect(() => {
                   key={user._id}
                   className="user-card"
                   onClick={() => navigate(`/inspect/${user._id}`)}
+                  title="Click to connect"
                 >
                   <RandomAvatar />
                   <p>{user.userName}</p>

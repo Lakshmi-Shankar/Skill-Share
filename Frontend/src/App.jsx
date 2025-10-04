@@ -6,9 +6,12 @@ import Dashboard from './UserInterface/dashboard';
 import Profile from './UserInterface/profile';
 import InspectProfile from './UserInterface/inspectProfile';
 
+import { Toaster } from "react-hot-toast";
+
 const App = () => {
   return (
     <>
+    <Toaster position="top-right" reverseOrder={false} />
       <Router>
         <Routes>
           <Route path='/' element = { <Signup />} />
